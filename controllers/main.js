@@ -30,26 +30,12 @@ const login = async (req, res) => {
   
 
 const dashboard = async (req, res)=> {
-    const authHeader = req.headers.authorization
-    if(!authHeader || !authHeader.startsWith('Bareer')){
-        throw new CustomAPIError('No token provided', 401)
-    }
-
-    // console.log(authHeader);
-    // To Cut the Bareer from the token
-    const token = authHeader.split(' ')[1]
-    // console.log(token)
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        const luckNumber = Math.floor(Math.random() * 100)
-        // console.log(decoded)
-        res.status(200).json({
-            msg: `Hello ${decoded.username}`,
-            secret: `Here Is Your Authorized Data Your Lucky Number is ${luckNumber}`
-        })
-    } catch (error) {
-        throw new CustomAPIError('No Authorized Route to access', 401)
-    }
+    // console.log(req.user);
+    const luckNumber = Math.floor(Math.random() * 100)
+    res.status(200).json({
+        msg: `Hello ${req.user.username}`,
+        secret: `Here Is Your Authorized Data Your Lucky Number is ${luckNumber}`
+    })
 }
 
 module.exports = { 
